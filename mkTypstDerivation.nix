@@ -23,6 +23,24 @@
   ...
 }@attrs:
 let
+  typst-packages-fetched = stdenv.mkDerivation {
+    inherit src;
+    name = "typst-packages";
+
+    buildInputs = [ typst ];
+
+    outputHash = packagesHash;
+
+    dontBuild = true;
+
+    installPhase = ''
+      export XDG_CACHE_HOME="$(mktemp -d)"
+      typst compile "${documentRoot}"
+
+      mkdir -p $out
+      cp -r "$XDG_CACHE_HOME/typst/packages" "$out"
+    '';
+  };
   typst-packages-src = symlinkJoin {
     name = "typst-packages-src";
     paths = [

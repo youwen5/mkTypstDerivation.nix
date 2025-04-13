@@ -27,8 +27,47 @@
           pkgs = import nixpkgs { inherit system; };
           resolvePackagesPath = builtins.map (x: "packages/preview/" + x);
           mkTypstDerivation = pkgs.callPackage ./mkTypstDerivation.nix { };
+          fetchTypstPackages = pkgs.callPackage ./fetchTypstPackages.nix { };
         in
         {
+          pack = fetchTypstPackages {
+            src = ./test-document;
+            documentRoot = "main.typ";
+
+            extraPackages =
+              let
+                # example of using a custom typst package not published to the package repository
+                # (this is my personal template)
+                # explanation: first we download the repository containing the
+                # template, and then set up a directory structure resembling
+                # what Typst expects
+                # ($XDG_CACHE_HOME/typst/packages/{NAMESPACE}/{TEMPLATE}/{VERSION})
+                zenTyp = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+                  pname = "zen-typ-package";
+                  version = "0.5.0";
+                  src = pkgs.fetchFromGitHub {
+                    owner = "youwen5";
+                    repo = "zen.typ";
+                    tag = "v${finalAttrs.version}";
+                    hash = "sha256-oyfLwdzzvAojFkVcqSYI8Z/fz0O3n+jCtkeD4tzjszk=";
+                  };
+                  dontBuild = true;
+                  installPhase = ''
+                    mkdir -p "$out/packages/youwen/zen/0.5.0"
+                    cp -r typst/* "$out/packages/youwen/zen/0.5.0"
+                  '';
+                });
+              in
+              pkgs.symlinkJoin {
+                name = "typst-packages-src";
+                paths = [
+                  # more typst packages can be added here
+                  "${zenTyp}/packages"
+                ];
+              };
+
+            hash = "sha256-R2165yC67Z0sK9r29mqE0AQm/VOWeG36bXSXTMLQ3vg=";
+          };
           default = mkTypstDerivation {
             name = "test-doc";
 
