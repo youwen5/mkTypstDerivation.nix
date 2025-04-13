@@ -18,23 +18,7 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs",
-        "zen-typ": "zen-typ"
-      }
-    },
-    "zen-typ": {
-      "locked": {
-        "lastModified": 1743636683,
-        "narHash": "sha256-fuPxJVbKtXoZY2KdTd1ssdvuhiQdfSzwYv0PRR/jfYo=",
-        "owner": "youwen5",
-        "repo": "zen.typ",
-        "rev": "bcffbc2943eb529b7c8bd3025b551e387a543da0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "youwen5",
-        "repo": "zen.typ",
-        "type": "github"
+        "nixpkgs": "nixpkgs"
       }
     }
   },

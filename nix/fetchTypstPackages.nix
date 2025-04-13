@@ -25,14 +25,13 @@
   src,
   hash ? "",
   extraPackages ? null,
-  typstCompiler ? typst,
   stdenv ? stdenvNoCC,
 }:
 stdenv.mkDerivation {
   src = src;
   name = "typst-packages-cache";
 
-  buildInputs = [ typstCompiler ];
+  buildInputs = [ typst ];
 
   outputHashAlgo = "sha256";
   outputHashMode = "nar";
@@ -57,7 +56,7 @@ stdenv.mkDerivation {
     + ''
       typst compile "${documentRoot}"
 
-      mkdir -p $out
-      cp -r "$XDG_CACHE_HOME/typst/packages" "$out"
+      mkdir -p $out/typst
+      cp -r "$XDG_CACHE_HOME/typst/packages" "$out/typst"
     '';
 }
