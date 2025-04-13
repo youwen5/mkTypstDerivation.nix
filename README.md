@@ -15,7 +15,9 @@ into an existing Typst document and require minimal maintenance.
 
 Use `nix flake init -t github:youwen5/mkTypstDerivation.nix` to obtain a bare
 minimum `flake.nix` to compile a Typst document with some packages and fonts.
-The file is self-documenting!
+The file is self-documenting! Look in `flake.nix`, in particular at
+`packages.complex-example` to see how you can add custom packages and more
+(e.g. set the correct time, etc).
 
 ## See also
 
