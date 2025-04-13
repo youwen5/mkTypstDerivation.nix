@@ -111,5 +111,10 @@
             };
         }
       );
+      templates.barebones = {
+        path = ./templates/barebones;
+        description = "barebones template for compiling a Typst document";
+      };
+      templates.default = self.templates.barebones;
     };
 }
